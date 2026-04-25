@@ -1,0 +1,30 @@
+{
+  "name": "devradar",
+  "private": true,
+  "packageManager": "pnpm@10.11.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "corepack pnpm -r build",
+    "dev:web": "corepack pnpm --filter @devradar/web dev",
+    "dev:web:clean": "corepack pnpm clean:web && corepack pnpm dev:web",
+    "dev:api": "corepack pnpm --filter @devradar/api start:dev",
+    "dev:worker": "corepack pnpm --filter @devradar/worker dev",
+    "worker:once": "corepack pnpm --filter @devradar/worker run:once",
+    "clean:web": "rm -rf apps/web/.next",
+    "test": "corepack pnpm -r test",
+    "prisma:generate": "node --env-file=.env.local ./node_modules/prisma/build/index.js generate --schema prisma/schema.prisma",
+    "prisma:migrate": "node --env-file=.env.local ./node_modules/prisma/build/index.js migrate dev --schema prisma/schema.prisma",
+    "prisma:seed": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@prisma/client": "^6.7.0",
+    "@types/node": "^24.0.0",
+    "prisma": "^6.7.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "@devradar/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "dev:clean": "rm -rf .next && next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "echo \"web tests pending\""
+  },
+  "dependencies": {
+    "@devradar/config": "workspace:*",
+    "@devradar/types": "workspace:*",
+    "@devradar/ui": "workspace:*",
+    "@devradar/utils": "workspace:*",
+    "@tanstack/react-query": "^5.75.7",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.503.0",
+    "next": "^15.3.1",
+    "next-auth": "^5.0.0-beta.29",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^3.4.17",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "typescript": "^5.8.3"
+  }
+}

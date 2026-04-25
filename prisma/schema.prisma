@@ -1,0 +1,265 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SourceType {
+  news
+  security
+}
+
+enum FeedCategory {
+  ai
+  web
+  app
+  backend
+  security
+}
+
+enum IncidentSeverity {
+  critical
+  high
+  medium
+  low
+  unknown
+}
+
+enum ExploitStatus {
+  known_exploited
+  suspected
+  none
+  unknown
+}
+
+enum AlertType {
+  security
+  feed
+}
+
+enum AlertSeverity {
+  critical
+  high
+  medium
+  low
+  info
+}
+
+enum AlertStatus {
+  unread
+  read
+  archived
+}
+
+enum RepoProvider {
+  github
+}
+
+enum DependencySourceType {
+  manifest
+  lockfile
+  dependency_graph
+}
+
+model User {
+  id             String            @id @default(cuid())
+  email          String            @unique
+  name           String?
+  avatarUrl      String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  watchlistItems WatchlistItem[]
+  alerts         UserAlert[]
+  repoConnections RepoConnection[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Source {
+  id                  String   @id @default(cuid())
+  key                 String   @unique
+  name                String
+  type                SourceType
+  enabled             Boolean  @default(true)
+  pollIntervalMinutes Int
+  createdAt           DateTime @default(now())
+  feedItems           FeedItem[]
+}
+
+model FeedItem {
+  id              String       @id @default(cuid())
+  sourceId        String
+  externalId      String
+  title           String
+  slug            String       @unique
+  url             String
+  canonicalUrl    String
+  dedupeKey       String       @unique
+  sourceName      String
+  author          String?
+  publishedAt     DateTime
+  fetchedAt       DateTime
+  category        FeedCategory
+  tags            String[]
+  summaryKo       String
+  whyItMattersKo  String
+  actionLabel     String
+  importanceScore Float        @default(0)
+  discussionScore Float        @default(0)
+  freshnessScore  Float        @default(0)
+  finalScore      Float        @default(0)
+  imageUrl        String?
+  aiBriefing      Json?
+  aiBriefingGeneratedAt DateTime?
+  rawPayload      Json
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  source          Source       @relation(fields: [sourceId], references: [id])
+  alerts          UserAlert[]
+
+  @@unique([sourceId, externalId])
+  @@index([publishedAt(sort: Desc)])
+  @@index([category])
+  @@index([tags])
+}
+
+model SecurityIncident {
+  id                    String                    @id @default(cuid())
+  canonicalKey          String                    @unique
+  title                 String
+  summaryKo             String
+  whyItMattersKo        String
+  packageName           String
+  ecosystem             String
+  severity              IncidentSeverity
+  affectedVersionRanges String[]
+  fixedVersions         String[]
+  aliases               String[]
+  references            String[]
+  exploitStatus         ExploitStatus             @default(unknown)
+  publishedAt           DateTime
+  modifiedAt            DateTime
+  sourcePriority        Int
+  actionRequired        Boolean                   @default(false)
+  recommendation        String
+  aiImpactBriefing      Json?
+  aiImpactGeneratedAt   DateTime?
+  rawPayload            Json
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+  packages              SecurityIncidentPackage[]
+  alerts                UserAlert[]
+
+  @@index([severity])
+  @@index([packageName])
+}
+
+model SecurityIncidentPackage {
+  id                    String           @id @default(cuid())
+  incidentId            String
+  packageName           String
+  ecosystem             String
+  affectedVersionRanges String[]
+  fixedVersions         String[]
+  incident              SecurityIncident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+}
+
+model WatchlistItem {
+  id             String   @id @default(cuid())
+  userId         String
+  packageName    String
+  ecosystem      String
+  currentVersion String?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, packageName, ecosystem])
+}
+
+model UserAlert {
+  id           String              @id @default(cuid())
+  userId       String
+  type         AlertType
+  incidentId   String?
+  feedItemId   String?
+  title        String
+  body         String
+  severity     AlertSeverity
+  status       AlertStatus         @default(unread)
+  channelState Json
+  createdAt    DateTime            @default(now())
+  readAt       DateTime?
+  user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  incident     SecurityIncident?   @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  feedItem     FeedItem?           @relation(fields: [feedItemId], references: [id], onDelete: Cascade)
+
+  @@index([userId, status, createdAt(sort: Desc)])
+}
+
+model RepoConnection {
+  id            String                   @id @default(cuid())
+  userId        String
+  provider      RepoProvider
+  repoOwner     String
+  repoName      String
+  repoExternalId String
+  isActive      Boolean                  @default(true)
+  installedAt   DateTime                 @default(now())
+  lastSyncedAt  DateTime?
+  user          User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  snapshots     RepoDependencySnapshot[]
+}
+
+model RepoDependencySnapshot {
+  id               String               @id @default(cuid())
+  repoConnectionId String
+  commitSha        String
+  manifestPath     String
+  ecosystem        String
+  packageName      String
+  version          String
+  sourceType       DependencySourceType
+  capturedAt       DateTime             @default(now())
+  repoConnection   RepoConnection       @relation(fields: [repoConnectionId], references: [id], onDelete: Cascade)
+
+  @@unique([repoConnectionId, commitSha, manifestPath, packageName])
+}

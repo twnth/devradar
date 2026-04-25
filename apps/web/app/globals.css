@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(109, 140, 255, 0.12), transparent 20%),
+    radial-gradient(circle at bottom right, rgba(239, 68, 68, 0.08), transparent 18%),
+    #090b12;
+  color: #f4f7fb;
+}
+
+* {
+  scrollbar-color: #2b3246 #0e111a;
+}
+
+.app-shell-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+@media (min-width: 1024px) {
+  .app-shell-grid {
+    grid-template-columns: 248px minmax(0, 1fr);
+  }
+}
+
+.glass-line {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.metric-chip {
+  @apply inline-flex items-center rounded-full border border-line bg-elevated px-3 py-1 text-xs text-muted;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

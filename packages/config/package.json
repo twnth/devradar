@@ -1,0 +1,14 @@
+{
+  "name": "@devradar/config",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./tailwind-preset.ts",
+  "types": "./tailwind-preset.ts",
+  "dependencies": {
+    "tailwindcss": "^3.4.17"
+  },
+  "scripts": {
+    "build": "echo \"config package has no build output\"",
+    "test": "echo \"no tests in @devradar/config\""
+  }
+}
