@@ -43,11 +43,9 @@ export const feedItemSchema = z.object({
 });
 
 export const feedBriefingSchema = z.object({
-  title: z.string().max(80),
-  intro: z.string().max(220),
-  keyPoints: z.array(z.string().max(180)).min(2).max(4),
-  recommendedChecks: z.array(z.string().max(180)).min(2).max(4),
-  whyNow: z.string().max(140)
+  title: z.string().max(100),
+  summary: z.string().max(520),
+  keyPoints: z.array(z.string().max(220)).min(3).max(5)
 });
 
 export const securityImpactBriefingSchema = z.object({

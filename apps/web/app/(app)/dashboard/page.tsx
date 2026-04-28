@@ -78,20 +78,18 @@ export default function DashboardPage() {
             const isTextValue = typeof metric.value === "string";
             return (
               <Card key={metric.label} className="p-5">
-                <div className="flex flex-col items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="flex items-start justify-between gap-3">
-                      <p className="text-sm text-muted">{metric.label}</p>
-                      <div className="rounded-2xl border border-line bg-elevated p-3">
-                        <Icon className="size-5 text-accent" />
-                      </div>
-                    </div>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm text-muted">{metric.label}</p>
                     <p
                       title={String(metric.value)}
-                      className={`mt-4 font-semibold ${isTextValue ? "truncate text-xl leading-7 xl:text-2xl" : "text-3xl"}`}
+                      className={`mt-4 max-w-full font-semibold ${isTextValue ? "block overflow-hidden text-ellipsis whitespace-nowrap text-xl leading-7 xl:text-2xl" : "text-3xl"}`}
                     >
                       {metric.value}
                     </p>
+                  </div>
+                  <div className="shrink-0 rounded-2xl border border-line bg-elevated p-3">
+                    <Icon className="size-5 text-accent" />
                   </div>
                 </div>
               </Card>

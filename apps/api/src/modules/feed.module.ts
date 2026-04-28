@@ -1,7 +1,11 @@
 import { Controller, Get, Inject, Module, Param, Query } from "@nestjs/common";
 import { feedQuerySchema } from "@devradar/types";
 import { mapFeedItem } from "../common/mappers";
-import { generateFeedBriefing, hasOpenAIKey } from "../common/feed-briefing";
+import {
+  generateFeedBriefing,
+  hasOpenAIKey,
+  normalizeCachedFeedBriefing
+} from "../common/feed-briefing";
 import { PrismaService } from "../common/prisma.service";
 
 @Controller("api/v1/feed")
@@ -89,8 +93,9 @@ class FeedController {
         return null;
       }
 
-      if (record.aiBriefing) {
-        return record.aiBriefing;
+      const cachedBriefing = normalizeCachedFeedBriefing(record.aiBriefing);
+      if (cachedBriefing) {
+        return cachedBriefing;
       }
 
       if (!hasOpenAIKey()) {

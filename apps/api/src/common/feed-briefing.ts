@@ -52,12 +52,21 @@ function buildFeedInput(feed: PrismaFeedItem) {
     url: feed.url,
     author: feed.author,
     publishedAt: feed.publishedAt.toISOString(),
-    rawPreview: body
+    rawPreview: body,
+    score: typeof rawPayload.score === "number" ? rawPayload.score : null,
+    comments:
+      typeof rawPayload.descendants === "number" ? rawPayload.descendants : null,
+    releaseTag: typeof rawPayload.tag_name === "string" ? rawPayload.tag_name : null
   };
 }
 
 export function hasOpenAIKey() {
   return Boolean(process.env.OPENAI_API_KEY);
+}
+
+export function normalizeCachedFeedBriefing(value: unknown): FeedBriefing | null {
+  const parsed = feedBriefingSchema.safeParse(value);
+  return parsed.success ? parsed.data : null;
 }
 
 export async function generateFeedBriefing(feed: PrismaFeedItem): Promise<FeedBriefing | null> {
@@ -82,7 +91,7 @@ export async function generateFeedBriefing(feed: PrismaFeedItem): Promise<FeedBr
             {
               type: "input_text",
               text:
-                "You are writing concise Korean briefings for developers reading software news and release updates. Use only the provided source data. Do not invent breaking changes, CVEs, migration steps, or facts that are not present in the source. Keep the tone direct and practical."
+                "You are writing Korean summaries for developers reading software news and release updates. Use only the provided source data. Do not invent breaking changes, CVEs, migration steps, or facts that are not present in the source. Keep the tone direct and practical. Make the summary materially useful, not generic. The summary should explain what the item is about in 3 to 5 sentences when enough source data exists."
             }
           ]
         },
@@ -106,22 +115,15 @@ export async function generateFeedBriefing(feed: PrismaFeedItem): Promise<FeedBr
             additionalProperties: false,
             properties: {
               title: { type: "string" },
-              intro: { type: "string" },
+              summary: { type: "string" },
               keyPoints: {
                 type: "array",
                 items: { type: "string" },
-                minItems: 2,
-                maxItems: 4
-              },
-              recommendedChecks: {
-                type: "array",
-                items: { type: "string" },
-                minItems: 2,
-                maxItems: 4
-              },
-              whyNow: { type: "string" }
+                minItems: 3,
+                maxItems: 5
+              }
             },
-            required: ["title", "intro", "keyPoints", "recommendedChecks", "whyNow"]
+            required: ["title", "summary", "keyPoints"]
           }
         }
       }
