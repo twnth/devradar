@@ -33,10 +33,6 @@ function toQueryString(query: Record<string, string | number | undefined>) {
 }
 
 async function fetchJson<T>(path: string, fallback: T): Promise<T> {
-  if (!apiBaseUrl) {
-    return fallback;
-  }
-
   try {
     const response = await fetch(`${apiBaseUrl}${path}`);
     if (!response.ok) {
