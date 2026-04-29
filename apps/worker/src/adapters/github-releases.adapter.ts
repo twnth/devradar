@@ -4,8 +4,14 @@ import type { FeedSourceAdapter } from "../lib/adapter";
 
 const watchedRepos = [
   { owner: "vercel", repo: "next.js", category: "web" as const, tags: ["Next.js", "Release"] },
+  { owner: "vercel", repo: "vercel", category: "web" as const, tags: ["Vercel", "Release"] },
   { owner: "vitejs", repo: "vite", category: "web" as const, tags: ["Vite", "Release"] },
-  { owner: "facebook", repo: "react", category: "web" as const, tags: ["React", "Release"] }
+  { owner: "facebook", repo: "react", category: "web" as const, tags: ["React", "Release"] },
+  { owner: "nuxt", repo: "nuxt", category: "web" as const, tags: ["Nuxt", "Release"] },
+  { owner: "sveltejs", repo: "kit", category: "web" as const, tags: ["SvelteKit", "Release"] },
+  { owner: "spring-projects", repo: "spring-boot", category: "backend" as const, tags: ["Spring Boot", "Release"] },
+  { owner: "JetBrains", repo: "kotlin", category: "app" as const, tags: ["Kotlin", "Release"] },
+  { owner: "androidx", repo: "androidx", category: "app" as const, tags: ["AndroidX", "Release"] }
 ];
 
 export class GitHubReleasesAdapter implements FeedSourceAdapter {

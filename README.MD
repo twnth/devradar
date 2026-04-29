@@ -45,8 +45,14 @@ redis    BullMQ queue. worker의 반복 작업과 job 실행을 관리합니다.
 - Hacker News Firebase API
 - GitHub Releases
   - `vercel/next.js`
+  - `vercel/vercel`
   - `vitejs/vite`
   - `facebook/react`
+  - `nuxt/nuxt`
+  - `sveltejs/kit`
+  - `spring-projects/spring-boot`
+  - `JetBrains/kotlin`
+  - `androidx/androidx`
 
 ### Security
 
