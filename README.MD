@@ -166,6 +166,23 @@ corepack pnpm worker:once
 - `NEXT_PUBLIC_API_BASE_URL`
 - `OPENAI_API_KEY`
 - `CRON_ENABLED`
+- `WORKER_HN_POLL_HOURS`
+- `WORKER_GITHUB_RELEASES_POLL_HOURS`
+- `WORKER_OSV_POLL_HOURS`
+- `WORKER_GITHUB_ADVISORIES_POLL_HOURS`
+- `WORKER_NVD_POLL_HOURS`
+- `WORKER_CISA_KEV_POLL_HOURS`
+
+기본 수집 주기는 시간 단위입니다.
+
+- Hacker News: 2시간마다
+- GitHub Releases: 4시간마다
+- OSV: 2시간마다
+- GitHub Advisories: 2시간마다
+- NVD: 6시간마다
+- CISA KEV: 12시간마다
+
+필요하면 루트 [`.env.local`](/Users/onigiriman/workspace/devradar/.env.local) 에서 각 값을 시간 단위로 덮어쓸 수 있습니다.
 
 ## 주요 API
 

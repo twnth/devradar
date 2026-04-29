@@ -3,6 +3,18 @@ import { calculateFeedScore, createFeedDedupeKey } from "@devradar/utils";
 import type { NormalizedFeedStaging, NormalizedSecurityStaging } from "@devradar/types";
 import { prisma } from "./prisma";
 
+function readPollingHours(envKey: string, fallbackHours: number) {
+  const rawValue = process.env[envKey];
+  if (!rawValue) return fallbackHours;
+
+  const parsed = Number(rawValue);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallbackHours;
+}
+
+function toMinutes(hours: number) {
+  return Math.round(hours * 60);
+}
+
 function slugify(value: string) {
   return value
     .toLowerCase()
@@ -89,19 +101,48 @@ function mapExploitStatus(status: NormalizedSecurityStaging["exploitStatus"]) {
   return status as ExploitStatus;
 }
 
+function pollIntervalMinutesForSource(sourceKey: string) {
+  if (sourceKey === "hacker-news") {
+    return toMinutes(readPollingHours("WORKER_HN_POLL_HOURS", 2));
+  }
+
+  if (sourceKey.startsWith("github-releases")) {
+    return toMinutes(readPollingHours("WORKER_GITHUB_RELEASES_POLL_HOURS", 4));
+  }
+
+  if (sourceKey === "github-advisories") {
+    return toMinutes(readPollingHours("WORKER_GITHUB_ADVISORIES_POLL_HOURS", 2));
+  }
+
+  if (sourceKey === "osv") {
+    return toMinutes(readPollingHours("WORKER_OSV_POLL_HOURS", 2));
+  }
+
+  if (sourceKey === "nvd") {
+    return toMinutes(readPollingHours("WORKER_NVD_POLL_HOURS", 6));
+  }
+
+  if (sourceKey === "cisa-kev") {
+    return toMinutes(readPollingHours("WORKER_CISA_KEV_POLL_HOURS", 12));
+  }
+
+  return mapSourceType(sourceKey) === SourceType.security ? 120 : 240;
+}
+
 async function upsertSource(sourceKey: string) {
   return prisma.source.upsert({
     where: { key: sourceKey },
     update: {
       name: sourceNameFromKey(sourceKey),
-      enabled: true
+      enabled: true,
+      pollIntervalMinutes: pollIntervalMinutesForSource(sourceKey)
     },
     create: {
       key: sourceKey,
       name: sourceNameFromKey(sourceKey),
       type: mapSourceType(sourceKey),
       enabled: true,
-      pollIntervalMinutes: mapSourceType(sourceKey) === SourceType.security ? 5 : 10
+      pollIntervalMinutes: pollIntervalMinutesForSource(sourceKey)
     }
   });
 }

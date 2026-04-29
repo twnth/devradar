@@ -2,21 +2,42 @@ import { PrismaClient, SourceType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+function readPollingHours(envKey: string, fallbackHours: number) {
+  const rawValue = process.env[envKey];
+  if (!rawValue) return fallbackHours;
+
+  const parsed = Number(rawValue);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallbackHours;
+}
+
+function toMinutes(hours: number) {
+  return Math.round(hours * 60);
+}
+
+const pollingMinutes = {
+  hackerNews: toMinutes(readPollingHours("WORKER_HN_POLL_HOURS", 2)),
+  githubReleases: toMinutes(readPollingHours("WORKER_GITHUB_RELEASES_POLL_HOURS", 4)),
+  githubAdvisories: toMinutes(readPollingHours("WORKER_GITHUB_ADVISORIES_POLL_HOURS", 2)),
+  osv: toMinutes(readPollingHours("WORKER_OSV_POLL_HOURS", 2)),
+  nvd: toMinutes(readPollingHours("WORKER_NVD_POLL_HOURS", 6)),
+  cisaKev: toMinutes(readPollingHours("WORKER_CISA_KEV_POLL_HOURS", 12))
+};
+
 const sourceSeeds = [
-  { key: "hacker-news", name: "Hacker News", type: SourceType.news, pollIntervalMinutes: 2 },
-  { key: "github-releases:next.js", name: "Next.js Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:vercel", name: "Vercel Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:vite", name: "Vite Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:react", name: "React Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:nuxt", name: "Nuxt Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:kit", name: "SvelteKit Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:spring-boot", name: "Spring Boot Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:kotlin", name: "Kotlin Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-releases:androidx", name: "AndroidX Releases", type: SourceType.news, pollIntervalMinutes: 10 },
-  { key: "github-advisories", name: "GitHub Advisories", type: SourceType.security, pollIntervalMinutes: 5 },
-  { key: "osv", name: "OSV", type: SourceType.security, pollIntervalMinutes: 5 },
-  { key: "nvd", name: "NVD", type: SourceType.security, pollIntervalMinutes: 15 },
-  { key: "cisa-kev", name: "CISA KEV", type: SourceType.security, pollIntervalMinutes: 30 }
+  { key: "hacker-news", name: "Hacker News", type: SourceType.news, pollIntervalMinutes: pollingMinutes.hackerNews },
+  { key: "github-releases:next.js", name: "Next.js Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:vercel", name: "Vercel Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:vite", name: "Vite Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:react", name: "React Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:nuxt", name: "Nuxt Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:kit", name: "SvelteKit Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:spring-boot", name: "Spring Boot Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:kotlin", name: "Kotlin Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-releases:androidx", name: "AndroidX Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "github-advisories", name: "GitHub Advisories", type: SourceType.security, pollIntervalMinutes: pollingMinutes.githubAdvisories },
+  { key: "osv", name: "OSV", type: SourceType.security, pollIntervalMinutes: pollingMinutes.osv },
+  { key: "nvd", name: "NVD", type: SourceType.security, pollIntervalMinutes: pollingMinutes.nvd },
+  { key: "cisa-kev", name: "CISA KEV", type: SourceType.security, pollIntervalMinutes: pollingMinutes.cisaKev }
 ];
 
 async function removeLegacyDemoData() {
