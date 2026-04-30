@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getAlerts,
+  getDashboardSummary,
   getFeedBriefing,
   getFeedItem,
   getFeedItems,
@@ -24,6 +25,13 @@ export function useFeedItems(query: FeedQuery = {}) {
   return useQuery({
     queryKey: ["feed-items", query],
     queryFn: () => getFeedItems(query)
+  });
+}
+
+export function useDashboardSummary() {
+  return useQuery({
+    queryKey: ["dashboard-summary"],
+    queryFn: getDashboardSummary
   });
 }
 

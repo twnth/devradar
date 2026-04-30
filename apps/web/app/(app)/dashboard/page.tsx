@@ -6,13 +6,14 @@ import { AlertTriangle, Newspaper, Shield, TrendingUp } from "lucide-react";
 import { Card, SectionHeader, SeverityBadge, SourceBadge } from "@devradar/ui";
 import { FeedCard } from "@/components/feed/feed-card";
 import { SecurityCard } from "@/components/security/security-card";
-import { useFeedItems, useSecurityIncidents, useWatchlist } from "@/lib/hooks";
+import { useDashboardSummary, useFeedItems, useSecurityIncidents, useWatchlist } from "@/lib/hooks";
 
 const categoryTabs = ["all", "ai", "web", "app", "backend", "security"] as const;
 type DashboardCategory = (typeof categoryTabs)[number];
 
 export default function DashboardPage() {
   const [selectedCategory, setSelectedCategory] = useState<DashboardCategory>("all");
+  const summary = useDashboardSummary();
   const feed = useFeedItems({
     category: selectedCategory === "all" ? undefined : selectedCategory,
     limit: 4
@@ -23,25 +24,10 @@ export default function DashboardPage() {
   const feedItems = feed.data ?? [];
   const incidents = (security.data ?? []).slice(0, 3);
   const watchedPackages = watchlist.data ?? [];
-  const criticalIncidentCount = (security.data ?? []).filter(
-    (incident) => incident.severity === "critical" || incident.severity === "high"
-  ).length;
-  const watchedAtRiskCount = watchedPackages.filter(
-    (item) => item.impactConfidence === "exact" || item.impactConfidence === "likely"
-  ).length;
-  const todayFeedCount = (feed.data ?? []).filter((item) => {
-    const publishedAt = new Date(item.publishedAt);
-    const now = new Date();
-    return (
-      publishedAt.getFullYear() === now.getFullYear() &&
-      publishedAt.getMonth() === now.getMonth() &&
-      publishedAt.getDate() === now.getDate()
-    );
-  }).length;
-  const topPriorityLabel =
-    security.data?.find((incident) => incident.severity === "critical")?.packageName ??
-    security.data?.[0]?.packageName ??
-    "-";
+  const criticalIncidentCount = summary.data?.criticalIncidentCount ?? 0;
+  const watchedAtRiskCount = summary.data?.watchedAtRiskCount ?? 0;
+  const todayFeedCount = summary.data?.todayFeedCount ?? 0;
+  const topPriorityLabel = summary.data?.topPriorityLabel ?? "-";
 
   return (
     <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr]">

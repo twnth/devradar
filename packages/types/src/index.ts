@@ -96,6 +96,13 @@ export const userAlertSchema = z.object({
   readAt: z.string().nullable().optional()
 });
 
+export const dashboardSummarySchema = z.object({
+  criticalIncidentCount: z.number(),
+  watchedAtRiskCount: z.number(),
+  todayFeedCount: z.number(),
+  topPriorityLabel: z.string()
+});
+
 export const feedQuerySchema = z.object({
   category: feedCategorySchema.optional(),
   tag: z.string().optional(),
@@ -151,5 +158,6 @@ export type SecurityImpactBriefing = z.infer<typeof securityImpactBriefingSchema
 export type SecurityIncident = z.infer<typeof securityIncidentSchema>;
 export type WatchlistItem = z.infer<typeof watchlistItemSchema>;
 export type UserAlert = z.infer<typeof userAlertSchema>;
+export type DashboardSummary = z.infer<typeof dashboardSummarySchema>;
 export type NormalizedFeedStaging = z.infer<typeof normalizedFeedStagingSchema>;
 export type NormalizedSecurityStaging = z.infer<typeof normalizedSecurityStagingSchema>;

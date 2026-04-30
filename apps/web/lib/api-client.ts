@@ -1,6 +1,7 @@
 "use client";
 
 import type {
+  DashboardSummary,
   FeedBriefing,
   FeedItem,
   SecurityImpactBriefing,
@@ -47,6 +48,15 @@ async function fetchJson<T>(path: string, fallback: T): Promise<T> {
 
 export function getFeedItems(query: FeedQuery = {}) {
   return fetchJson<FeedItem[]>("/api/v1/feed" + toQueryString(query), []);
+}
+
+export function getDashboardSummary() {
+  return fetchJson<DashboardSummary>("/api/v1/dashboard/summary", {
+    criticalIncidentCount: 0,
+    watchedAtRiskCount: 0,
+    todayFeedCount: 0,
+    topPriorityLabel: "-"
+  });
 }
 
 export function getFeedItem(id: string) {

@@ -7,6 +7,7 @@ import { HealthModule } from "./modules/health.module";
 import { InternalModule } from "./modules/internal.module";
 import { AuthModule } from "./modules/auth.module";
 import { UsersModule } from "./modules/users.module";
+import { DashboardModule } from "./modules/dashboard.module";
 import { PrismaService } from "./common/prisma.service";
 
 @Module({
@@ -18,6 +19,7 @@ import { PrismaService } from "./common/prisma.service";
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
     FeedModule,
     SecurityModule,
+    DashboardModule,
     HealthModule,
     InternalModule,
     AuthModule,
