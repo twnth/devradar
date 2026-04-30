@@ -1,16 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpenText, Gauge, Radar, ShieldAlert } from "lucide-react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
-
-const items = [
-  { href: "/dashboard", label: "Dashboard", icon: Gauge },
-  { href: "/feed", label: "Feed", icon: BookOpenText },
-  { href: "/security", label: "Security", icon: ShieldAlert },
-  { href: "/watchlist", label: "Watchlist", icon: Radar }
-];
+import { navItems } from "./nav-items";
 
 export function AppSidebar() {
   const pathname = usePathname();
@@ -24,7 +17,7 @@ export function AppSidebar() {
           <p className="mt-3 text-sm leading-6 text-muted">뉴스는 빠르게, 업그레이드는 더 빠르게.</p>
         </Link>
         <nav className="mt-6 space-y-2">
-          {items.map((item) => {
+          {navItems.map((item) => {
             const Icon = item.icon;
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (

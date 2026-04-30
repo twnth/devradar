@@ -157,7 +157,7 @@ export default function DashboardPage() {
               >
                 <div className="flex items-center gap-2">
                   <SeverityBadge severity={incident.severity === "unknown" ? "info" : incident.severity} />
-                  <span className="mono text-sm">{incident.packageName}</span>
+                  <span className="mono min-w-0 break-all text-sm">{incident.packageName}</span>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-muted">{incident.summaryKo}</p>
               </Link>
@@ -170,11 +170,13 @@ export default function DashboardPage() {
           <div className="mt-5 space-y-3">
             {watchedPackages.map((item) => (
               <div key={item.id} className="flex items-center justify-between rounded-2xl border border-line bg-elevated p-4">
-                <div>
-                  <p className="mono text-sm font-medium">{item.packageName}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="mono break-all text-sm font-medium">{item.packageName}</p>
                   <p className="mt-1 text-xs text-muted">{item.currentVersion ?? "version unknown"}</p>
                 </div>
-                <SourceBadge label={item.impactConfidence ?? "unknown"} />
+                <div className="shrink-0 pl-3">
+                  <SourceBadge label={item.impactConfidence ?? "unknown"} />
+                </div>
               </div>
             ))}
           </div>

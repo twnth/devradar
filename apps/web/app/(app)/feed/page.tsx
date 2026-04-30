@@ -35,7 +35,7 @@ export default function FeedPage() {
               {item}
             </button>
           ))}
-          <div className="ml-auto flex gap-2">
+          <div className="flex w-full flex-wrap gap-2 sm:ml-auto sm:w-auto">
             {["latest", "important", "discussed"].map((item) => (
               <button
                 key={item}

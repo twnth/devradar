@@ -29,7 +29,7 @@ export default function SecurityDetailPage() {
         보안 레인으로 돌아가기
       </Link>
 
-      <Card className="border-critical/25 p-8">
+      <Card className="max-w-full overflow-hidden border-critical/25 p-6 sm:p-8">
         <div className="flex flex-wrap items-center gap-2">
           <SeverityBadge severity={data.severity === "unknown" ? "info" : data.severity} />
           <TagPill label={data.packageName} />
@@ -37,21 +37,21 @@ export default function SecurityDetailPage() {
           {data.exploitStatus === "known_exploited" ? <TagPill label="known exploited" /> : null}
           {watchMatch ? <TagPill label={`watch: ${watchMatch.currentVersion ?? "unknown"}`} /> : null}
         </div>
-        <h1 className="mt-5 text-4xl font-semibold tracking-tight">{data.title}</h1>
+        <h1 className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">{data.title}</h1>
         <p className="mt-5 max-w-3xl text-base leading-8 text-muted">{data.summaryKo}</p>
       </Card>
 
       <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-        <Card className="p-8">
+        <Card className="max-w-full overflow-hidden p-6 sm:p-8">
           <SectionHeader title="Version impact" description="가장 먼저 봐야 할 건 affected / fixed line입니다." />
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div className="rounded-2xl border border-line bg-elevated p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">Affected ranges</p>
-              <p className="mt-3 mono text-sm">{data.affectedVersionRanges.join(", ")}</p>
+              <p className="mt-3 break-words mono text-sm">{data.affectedVersionRanges.join(", ")}</p>
             </div>
             <div className="rounded-2xl border border-safe/25 bg-safe/10 p-4">
               <p className="text-xs uppercase tracking-[0.18em] text-safe">Fixed versions</p>
-              <p className="mt-3 mono text-sm">{data.fixedVersions.join(", ") || "미정"}</p>
+              <p className="mt-3 break-words mono text-sm">{data.fixedVersions.join(", ") || "미정"}</p>
             </div>
           </div>
           {impactQuery.isLoading ? (
@@ -83,7 +83,7 @@ export default function SecurityDetailPage() {
           ) : null}
         </Card>
 
-        <Card className="p-8">
+        <Card className="max-w-full overflow-hidden p-6 sm:p-8">
           <SectionHeader title="References & aliases" />
           <div className="mt-6 space-y-4">
             <div>
@@ -98,8 +98,8 @@ export default function SecurityDetailPage() {
               <p className="text-xs uppercase tracking-[0.18em] text-muted">References</p>
               <div className="mt-3 space-y-2">
                 {data.references.map((reference) => (
-                  <a key={reference} href={reference} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm text-accent">
-                    {reference}
+                  <a key={reference} href={reference} target="_blank" rel="noreferrer" className="flex items-start gap-2 break-all text-sm text-accent">
+                    <span className="min-w-0 flex-1">{reference}</span>
                     <ExternalLink className="size-4" />
                   </a>
                 ))}

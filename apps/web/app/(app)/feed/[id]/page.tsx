@@ -120,15 +120,15 @@ export default function FeedDetailPage() {
         피드로 돌아가기
       </Link>
 
-      <Card className="p-8">
+      <Card className="max-w-full overflow-hidden p-6 sm:p-8">
         <div className="flex flex-wrap items-center gap-2">
           <TagPill label={data.category.toUpperCase()} />
           <SourceBadge label={data.sourceName} />
           <TagPill label={data.actionLabel} />
         </div>
         <div className="mt-5 flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
-          <div className="max-w-4xl">
-            <h1 className="text-4xl font-semibold tracking-tight">{data.title}</h1>
+          <div className="min-w-0 max-w-4xl">
+            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{data.title}</h1>
             <p className="mt-5 text-base leading-8 text-muted">{data.summaryKo}</p>
             <a
               href={data.url}
@@ -140,7 +140,7 @@ export default function FeedDetailPage() {
               <ExternalLink className="size-4" />
             </a>
           </div>
-          <div className="min-w-[220px] rounded-xl3 border border-line bg-elevated p-5">
+          <div className="w-full rounded-xl3 border border-line bg-elevated p-5 xl:min-w-[220px] xl:w-auto">
             <p className="text-xs uppercase tracking-[0.18em] text-muted">Source snapshot</p>
             <p className="mt-3 text-sm text-muted">{data.sourceName}</p>
             <p className="mt-2 text-sm text-muted">{formatDate(data.publishedAt)}</p>
@@ -150,7 +150,7 @@ export default function FeedDetailPage() {
       </Card>
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <Card className="p-8">
+        <Card className="max-w-full overflow-hidden p-6 sm:p-8">
           <SectionHeader
             title={briefingQuery.data?.title ?? "GPT 요약"}
             description="원문과 메타데이터를 바탕으로 핵심만 짧게 정리했습니다."
@@ -189,13 +189,13 @@ export default function FeedDetailPage() {
           {previewText ? (
             <div className="mt-8 rounded-xl3 border border-line bg-elevated p-5">
               <p className="text-xs uppercase tracking-[0.18em] text-muted">원문 미리보기</p>
-              <pre className="mt-4 whitespace-pre-wrap text-sm leading-7 text-muted">{previewText}</pre>
+              <pre className="mt-4 whitespace-pre-wrap break-words text-sm leading-7 text-muted">{previewText}</pre>
             </div>
           ) : null}
         </Card>
 
         <div className="space-y-6">
-          <Card className="p-6">
+          <Card className="max-w-full overflow-hidden p-6">
             <SectionHeader title={sourceContext?.label ?? "Metadata"} description="소스 성격과 원문 메타데이터입니다." />
             <div className="mt-6 space-y-3 text-sm text-muted">
               <p>Source: {data.sourceName}</p>
