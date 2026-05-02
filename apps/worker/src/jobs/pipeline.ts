@@ -25,12 +25,15 @@ export function createQueues(context: PipelineContext) {
 export function createWorkers(context: PipelineContext) {
   const queues = createQueues(context);
 
-  return [
+  const workers = [
     new Worker(
       "feed-normalize",
       async (job) => {
         const items = job.data as NormalizedFeedStaging[];
-        return persistFeedItems(items);
+        console.log(`[worker][feed-normalize] start name=${job.name} id=${job.id ?? "unknown"} count=${items.length}`);
+        const persisted = await persistFeedItems(items);
+        console.log(`[worker][feed-normalize] persisted count=${persisted.length}`);
+        return persisted;
       },
       { connection: context.connection }
     ),
@@ -44,9 +47,12 @@ export function createWorkers(context: PipelineContext) {
     new Worker(
       "security-normalize",
       async (job) => {
+        const incoming = job.data as NormalizedSecurityStaging[];
+        console.log(`[worker][security-normalize] start name=${job.name} id=${job.id ?? "unknown"} count=${incoming.length}`);
         const incidents = await persistSecurityIncidents(
-          job.data as NormalizedSecurityStaging[]
+          incoming
         );
+        console.log(`[worker][security-normalize] persisted count=${incidents.length}`);
 
         return Promise.all(
           incidents.map((incident) =>
@@ -70,12 +76,14 @@ export function createWorkers(context: PipelineContext) {
         const data = job.data as {
           incidentId: string;
         };
+        console.log(`[worker][security-match] start incidentId=${data.incidentId} id=${job.id ?? "unknown"}`);
 
         const incident = await prisma.securityIncident.findUnique({
           where: { id: data.incidentId }
         });
 
         if (!incident) {
+          console.log(`[worker][security-match] skip missing incidentId=${data.incidentId}`);
           return [];
         }
 
@@ -173,9 +181,26 @@ export function createWorkers(context: PipelineContext) {
           });
         }
 
+        console.log(`[worker][security-match] completed incidentId=${data.incidentId} watchMatches=${results.length}`);
+
         return results;
       },
       { connection: context.connection }
     )
   ];
+
+  for (const worker of workers) {
+    worker.on("failed", (job, error) => {
+      console.error(
+        `[worker][${worker.name}] failed job=${job?.name ?? "unknown"} id=${job?.id ?? "unknown"}`,
+        error
+      );
+    });
+
+    worker.on("error", (error) => {
+      console.error(`[worker][${worker.name}] worker-error`, error);
+    });
+  }
+
+  return workers;
 }
