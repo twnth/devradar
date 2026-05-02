@@ -8,7 +8,7 @@ import { InternalModule } from "./modules/internal.module";
 import { AuthModule } from "./modules/auth.module";
 import { UsersModule } from "./modules/users.module";
 import { DashboardModule } from "./modules/dashboard.module";
-import { PrismaService } from "./common/prisma.service";
+import { PrismaModule } from "./common/prisma.module";
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { PrismaService } from "./common/prisma.service";
       envFilePath: ["../../.env.local", ".env.local"],
       isGlobal: true
     }),
+    PrismaModule,
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 120 }]),
     FeedModule,
     SecurityModule,
@@ -24,7 +25,6 @@ import { PrismaService } from "./common/prisma.service";
     InternalModule,
     AuthModule,
     UsersModule
-  ],
-  providers: [PrismaService]
+  ]
 })
 export class AppModule {}

@@ -106,7 +106,6 @@ class DashboardController {
 }
 
 @Module({
-  providers: [PrismaService],
   controllers: [DashboardController]
 })
 export class DashboardModule {}

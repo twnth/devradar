@@ -353,7 +353,6 @@ class DevtoolsController {
 }
 
 @Module({
-  providers: [PrismaService],
   controllers: [
     SecurityController,
     WatchlistController,

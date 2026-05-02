@@ -125,7 +125,6 @@ class FeedController {
 }
 
 @Module({
-  providers: [PrismaService],
   controllers: [FeedController]
 })
 export class FeedModule {}
