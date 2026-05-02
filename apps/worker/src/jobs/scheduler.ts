@@ -25,6 +25,22 @@ export async function registerRecurringJobs(queues: {
     cisaKev: readPollingHours("WORKER_CISA_KEV_POLL_HOURS", 12)
   };
 
+  console.log("Registering recurring worker jobs");
+  console.log(
+    JSON.stringify(
+      {
+        hackerNewsHours: pollingHours.hackerNews,
+        githubReleasesHours: pollingHours.githubReleases,
+        osvHours: pollingHours.osv,
+        githubAdvisoriesHours: pollingHours.githubAdvisories,
+        nvdHours: pollingHours.nvd,
+        cisaKevHours: pollingHours.cisaKev
+      },
+      null,
+      2
+    )
+  );
+
   await queues.feedIngest.upsertJobScheduler("ingest-hn", {
     every: hoursToMs(pollingHours.hackerNews)
   }, {
@@ -89,4 +105,6 @@ export async function registerRecurringJobs(queues: {
       jobId: `startup:ingest-cisa-kev:${startedAt}`
     })
   ]);
+
+  console.log(`Startup ingest jobs queued at ${new Date(startedAt).toISOString()}`);
 }

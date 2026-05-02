@@ -70,9 +70,11 @@ async function bootstrap() {
   new Worker(
     "feed-ingest",
     async (job) => {
+      console.log(`[worker][feed-ingest] start name=${job.name} source=${job.data.source} id=${job.id ?? "unknown"}`);
       const adapter = feedAdapters[job.data.source as keyof typeof feedAdapters];
       if (!adapter) return [];
       const items = await adapter.fetch();
+      console.log(`[worker][feed-ingest] fetched source=${job.data.source} count=${items.length}`);
       await queues.feedNormalize.add("normalize-feed", items, {
         jobId: `${job.name}:${job.timestamp}`,
         attempts: 5,
@@ -81,6 +83,7 @@ async function bootstrap() {
           delay: 1_000
         }
       });
+      console.log(`[worker][feed-ingest] queued-normalize source=${job.data.source} count=${items.length}`);
       return items.length;
     },
     { connection }
@@ -89,9 +92,11 @@ async function bootstrap() {
   new Worker(
     "security-ingest",
     async (job) => {
+      console.log(`[worker][security-ingest] start name=${job.name} source=${job.data.source} id=${job.id ?? "unknown"}`);
       const adapter = securityAdapters[job.data.source as keyof typeof securityAdapters];
       if (!adapter) return [];
       const incidents = await adapter.fetch();
+      console.log(`[worker][security-ingest] fetched source=${job.data.source} count=${incidents.length}`);
       await queues.securityNormalize.add("normalize-security", incidents, {
         jobId: `${job.name}:${job.timestamp}`,
         attempts: 5,
@@ -100,16 +105,21 @@ async function bootstrap() {
           delay: 1_000
         }
       });
+      console.log(`[worker][security-ingest] queued-normalize source=${job.data.source} count=${incidents.length}`);
       return incidents.length;
     },
     { connection }
   );
+
+  console.log(`CRON_ENABLED=${process.env.CRON_ENABLED ?? "undefined"}`);
 
   if (process.env.CRON_ENABLED !== "false") {
     await registerRecurringJobs({
       feedIngest: queues.feedIngest as Queue,
       securityIngest: queues.securityIngest as Queue
     });
+  } else {
+    console.log("Recurring worker jobs are disabled by CRON_ENABLED=false");
   }
 
   console.log("DevRadar worker started");
