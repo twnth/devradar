@@ -69,7 +69,7 @@ export default function SecurityDetailPage() {
               <h2 className="mt-3 text-lg font-semibold">{impactQuery.data.title}</h2>
               <p className="mt-3 text-sm leading-7 text-muted">{impactQuery.data.intro}</p>
               <div className="mt-5 space-y-3">
-                {impactQuery.data.sideEffects.map((effect) => (
+                {impactQuery.data.sideEffects.map((effect: string) => (
                   <div key={effect} className="rounded-2xl border border-line/80 bg-black/10 p-4 text-sm leading-7 text-foreground/90">
                     {effect}
                   </div>
@@ -89,7 +89,7 @@ export default function SecurityDetailPage() {
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-muted">Aliases</p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {data.aliases.map((alias) => (
+                {data.aliases.map((alias: string) => (
                   <TagPill key={alias} label={alias} />
                 ))}
               </div>
@@ -97,7 +97,7 @@ export default function SecurityDetailPage() {
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-muted">References</p>
               <div className="mt-3 space-y-2">
-                {data.references.map((reference) => (
+                {data.references.map((reference: string) => (
                   <a key={reference} href={reference} target="_blank" rel="noreferrer" className="flex items-start gap-2 break-all text-sm text-accent">
                     <span className="min-w-0 flex-1">{reference}</span>
                     <ExternalLink className="size-4" />
