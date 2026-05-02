@@ -1,4 +1,4 @@
-import type { Severity } from "@devradar/types";
+import type { Severity } from "../../types/src";
 
 export function calculateFeedScore(input: {
   freshnessScore: number;

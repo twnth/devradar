@@ -1,5 +1,5 @@
 import semver from "semver";
-import type { ImpactConfidence } from "@devradar/types";
+import type { ImpactConfidence } from "../../types/src";
 
 function normalizeJvmVersion(version: string) {
   const coerced = semver.coerce(version.replace(/[^0-9A-Za-z.+-]/g, ""));

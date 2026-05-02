@@ -1,4 +1,4 @@
-import type { ImpactConfidence, Severity } from "@devradar/types";
+import type { ImpactConfidence, Severity } from "../../types/src";
 
 export function shouldTriggerImmediateAlert(input: {
   severity: Severity;
