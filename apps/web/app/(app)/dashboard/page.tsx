@@ -56,7 +56,7 @@ export default function DashboardPage() {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
             { label: "긴급 점검 이슈", value: criticalIncidentCount, icon: AlertTriangle },
-            { label: "주시 중 위험 패키지", value: watchedAtRiskCount, icon: Shield },
+            { label: "주시 중 패키지", value: watchedAtRiskCount, icon: Shield },
             { label: "오늘의 새 피드", value: todayFeedCount, icon: Newspaper },
             { label: "최고 우선순위", value: topPriorityLabel, icon: TrendingUp }
           ].map((metric) => {
