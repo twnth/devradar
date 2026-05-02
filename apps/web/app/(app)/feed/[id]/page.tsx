@@ -171,7 +171,7 @@ export default function FeedDetailPage() {
               <div className="rounded-xl3 border border-line bg-elevated p-5">
                 <p className="text-sm leading-7 text-foreground">{briefingQuery.data.summary}</p>
               </div>
-              {briefingQuery.data.keyPoints.map((bullet) => (
+              {briefingQuery.data.keyPoints.map((bullet: string) => (
                 <div key={bullet} className="rounded-xl3 border border-line bg-elevated p-5">
                   <p className="text-sm leading-7 text-foreground">{bullet}</p>
                 </div>
@@ -205,11 +205,11 @@ export default function FeedDetailPage() {
               <p>Author: {data.author ?? "확인 불가"}</p>
               <p>Published: {formatDate(data.publishedAt)}</p>
               <p>Fetched: {formatDate(data.fetchedAt)}</p>
-              {sourceContext?.lines.map((line) => (
+              {sourceContext?.lines.map((line: string) => (
                 <p key={line}>{line}</p>
               ))}
               <div className="flex flex-wrap gap-2 pt-2">
-                {data.tags.map((tag) => (
+                {data.tags.map((tag: string) => (
                   <TagPill key={tag} label={tag} />
                 ))}
               </div>
@@ -224,7 +224,7 @@ export default function FeedDetailPage() {
           description="같은 태그나 카테고리로 연결되는 항목들입니다."
         />
         <div className="mt-6 space-y-4">
-          {relatedItems.map((item) => (
+          {relatedItems.map((item: RelatedFeedItem) => (
             <FeedCard key={item.id} item={item} />
           ))}
           {relatedItems.length === 0 ? (
