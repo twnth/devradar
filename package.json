@@ -12,6 +12,8 @@
     "dev:web:clean": "corepack pnpm clean:web && corepack pnpm dev:web",
     "dev:api": "corepack pnpm --filter @devradar/api start:dev",
     "dev:worker": "corepack pnpm --filter @devradar/worker dev",
+    "start:api": "corepack pnpm --filter @devradar/api start",
+    "start:worker": "corepack pnpm --filter @devradar/worker start",
     "worker:once": "corepack pnpm --filter @devradar/worker run:once",
     "clean:web": "rm -rf apps/web/.next",
     "test": "corepack pnpm -r test",

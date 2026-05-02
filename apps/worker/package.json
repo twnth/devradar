@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "node --env-file=../../.env.local ../../node_modules/tsx/dist/cli.mjs watch src/index.ts",
+    "start": "node --env-file=../../.env.local dist/index.js",
     "run:once": "node --env-file=../../.env.local ../../node_modules/tsx/dist/cli.mjs src/run-once.ts",
     "test": "echo \"worker tests pending\""
   },
