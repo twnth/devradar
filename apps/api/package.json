@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
     "start:dev": "node --env-file=../../.env.local ../../node_modules/tsx/dist/cli.mjs watch src/main.ts",
-    "start": "node --env-file=../../.env.local dist/main.js",
+    "start": "node --env-file=../../.env.local dist/apps/api/src/main.js",
     "test": "echo \"api tests pending\""
   },
   "dependencies": {
