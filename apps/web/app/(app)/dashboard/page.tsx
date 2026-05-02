@@ -36,9 +36,9 @@ export default function DashboardPage() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="metric-chip border-critical/30 bg-critical/15 text-critical">Urgent patch radar</p>
-              <h1 className="mt-5 text-3xl font-semibold">긴급 업그레이드가 필요한 이슈가 감지됐습니다.</h1>
+              <h1 className="mt-5 text-3xl font-semibold">긴급 업그레이드가 필요한 이슈가 있습니다.</h1>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-muted">
-                워치리스트 기준으로 지금 바로 확인할 사고만 상단에 고정했습니다. 일반 뉴스와 섞지 않고 separate lane으로 유지합니다.
+                지금 점검할 패키지 이슈를 먼저 보여줍니다.
               </p>
             </div>
             <AlertTriangle className="size-8 text-critical" />

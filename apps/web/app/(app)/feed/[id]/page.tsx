@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { FeedCard } from "@/components/feed/feed-card";
 import { useFeedBriefing, useFeedItem, useFeedItems } from "@/lib/hooks";
 import { Card, ErrorState, SectionHeader, SourceBadge, TagPill } from "@devradar/ui";
+import type { FeedItem } from "@devradar/types";
 
 function formatDate(value: string) {
   return new Date(value).toLocaleString("ko-KR");
@@ -89,10 +90,10 @@ export default function FeedDetailPage() {
     }
 
     return (relatedFeedQuery.data ?? [])
-      .filter((item) => item.id !== data.id)
-      .map((item) => ({
+      .filter((item: FeedItem) => item.id !== data.id)
+      .map((item: FeedItem) => ({
         item,
-        overlap: item.tags.filter((tag) => data.tags.includes(tag)).length
+        overlap: item.tags.filter((tag: string) => data.tags.includes(tag)).length
       }))
       .filter(({ item, overlap }) => overlap > 0 || item.category === data.category)
       .sort((left, right) => {
