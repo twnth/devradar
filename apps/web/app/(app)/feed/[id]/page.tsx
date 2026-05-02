@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import type { ComponentProps } from "react";
 import { useMemo } from "react";
 import { ArrowLeft, ExternalLink, LoaderCircle } from "lucide-react";
 import { useParams } from "next/navigation";
 import { FeedCard } from "@/components/feed/feed-card";
 import { useFeedBriefing, useFeedItem, useFeedItems } from "@/lib/hooks";
 import { Card, ErrorState, SectionHeader, SourceBadge, TagPill } from "@devradar/ui";
-import type { FeedItem } from "@devradar/types";
+
+type RelatedFeedItem = ComponentProps<typeof FeedCard>["item"];
 
 function formatDate(value: string) {
   return new Date(value).toLocaleString("ko-KR");
@@ -90,8 +92,8 @@ export default function FeedDetailPage() {
     }
 
     return (relatedFeedQuery.data ?? [])
-      .filter((item: FeedItem) => item.id !== data.id)
-      .map((item: FeedItem) => ({
+      .filter((item: RelatedFeedItem) => item.id !== data.id)
+      .map((item: RelatedFeedItem) => ({
         item,
         overlap: item.tags.filter((tag: string) => data.tags.includes(tag)).length
       }))
