@@ -8,6 +8,7 @@ import { NvdAdapter } from "./adapters/nvd.adapter";
 import { OsvAdapter } from "./adapters/osv.adapter";
 import { createQueues, createWorkers } from "./jobs/pipeline";
 import { registerRecurringJobs } from "./jobs/scheduler";
+import { persistFeedItems, persistSecurityIncidents } from "./lib/persistence";
 
 const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379";
 const connection = { url: redisUrl };
@@ -75,16 +76,9 @@ async function bootstrap() {
       if (!adapter) return [];
       const items = await adapter.fetch();
       console.log(`[worker][feed-ingest] fetched source=${job.data.source} count=${items.length}`);
-      await queues.feedNormalize.add("normalize-feed", items, {
-        jobId: `${job.name}:${job.timestamp}`,
-        attempts: 5,
-        backoff: {
-          type: "exponential",
-          delay: 1_000
-        }
-      });
-      console.log(`[worker][feed-ingest] queued-normalize source=${job.data.source} count=${items.length}`);
-      return items.length;
+      const persisted = await persistFeedItems(items);
+      console.log(`[worker][feed-ingest] persisted source=${job.data.source} count=${persisted.length}`);
+      return persisted.length;
     },
     { connection }
   );
@@ -97,16 +91,21 @@ async function bootstrap() {
       if (!adapter) return [];
       const incidents = await adapter.fetch();
       console.log(`[worker][security-ingest] fetched source=${job.data.source} count=${incidents.length}`);
-      await queues.securityNormalize.add("normalize-security", incidents, {
-        jobId: `${job.name}:${job.timestamp}`,
-        attempts: 5,
-        backoff: {
-          type: "exponential",
-          delay: 1_000
-        }
-      });
-      console.log(`[worker][security-ingest] queued-normalize source=${job.data.source} count=${incidents.length}`);
-      return incidents.length;
+      const persisted = await persistSecurityIncidents(incidents);
+      console.log(`[worker][security-ingest] persisted source=${job.data.source} count=${persisted.length}`);
+
+      await Promise.all(
+        persisted.map((incident) =>
+          queues.securityMatch.add(
+            "match-watchlists",
+            { incidentId: incident.id },
+            { jobId: `incident-match:${incident.id}` }
+          )
+        )
+      );
+
+      console.log(`[worker][security-ingest] queued-match source=${job.data.source} count=${persisted.length}`);
+      return persisted.length;
     },
     { connection }
   );
