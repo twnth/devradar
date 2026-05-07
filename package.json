@@ -19,6 +19,7 @@
     "test": "corepack pnpm -r test",
     "prisma:generate": "node --env-file=.env.local ./node_modules/prisma/build/index.js generate --schema prisma/schema.prisma",
     "prisma:migrate": "node --env-file=.env.local ./node_modules/prisma/build/index.js migrate dev --schema prisma/schema.prisma",
+    "prisma:deploy": "node --env-file=.env.local ./node_modules/prisma/build/index.js migrate deploy --schema prisma/schema.prisma",
     "prisma:seed": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
   },
   "devDependencies": {

@@ -1,0 +1,25 @@
+alter table if exists public."User" enable row level security;
+alter table if exists public."Account" enable row level security;
+alter table if exists public."Session" enable row level security;
+alter table if exists public."VerificationToken" enable row level security;
+alter table if exists public."Source" enable row level security;
+alter table if exists public."FeedItem" enable row level security;
+alter table if exists public."SecurityIncident" enable row level security;
+alter table if exists public."SecurityIncidentPackage" enable row level security;
+alter table if exists public."WatchlistItem" enable row level security;
+alter table if exists public."UserAlert" enable row level security;
+alter table if exists public."RepoConnection" enable row level security;
+alter table if exists public."RepoDependencySnapshot" enable row level security;
+
+revoke all on table public."User" from anon, authenticated;
+revoke all on table public."Account" from anon, authenticated;
+revoke all on table public."Session" from anon, authenticated;
+revoke all on table public."VerificationToken" from anon, authenticated;
+revoke all on table public."Source" from anon, authenticated;
+revoke all on table public."FeedItem" from anon, authenticated;
+revoke all on table public."SecurityIncident" from anon, authenticated;
+revoke all on table public."SecurityIncidentPackage" from anon, authenticated;
+revoke all on table public."WatchlistItem" from anon, authenticated;
+revoke all on table public."UserAlert" from anon, authenticated;
+revoke all on table public."RepoConnection" from anon, authenticated;
+revoke all on table public."RepoDependencySnapshot" from anon, authenticated;

@@ -237,3 +237,39 @@ corepack pnpm build
 ```bash
 corepack pnpm dev:web:clean
 ```
+
+## GitHub Actions EC2 배포
+
+`main` 브랜치에 push하면 GitHub Actions가 EC2로 SSH 접속해 배포를 수행합니다.
+
+배포 순서:
+
+- `git pull --ff-only origin main`
+- `corepack pnpm install --frozen-lockfile`
+- `corepack pnpm prisma:generate`
+- `corepack pnpm prisma:deploy`
+- `corepack pnpm build`
+- `pm2`로 `devradar-api`, `devradar-worker` 재시작
+
+워크플로 파일:
+
+- [deploy-ec2.yml](/Users/onigiriman/workspace/devradar/.github/workflows/deploy-ec2.yml)
+
+원격 배포 스크립트:
+
+- [deploy-ec2.sh](/Users/onigiriman/workspace/devradar/scripts/deploy-ec2.sh)
+
+GitHub Repository Secrets:
+
+- `EC2_HOST`
+- `EC2_USER`
+- `EC2_SSH_KEY`
+- `EC2_SSH_PORT`
+- `EC2_APP_DIR`
+
+EC2 전제 조건:
+
+- 레포가 `EC2_APP_DIR` 경로에 이미 clone 되어 있어야 함
+- 루트 `.env.local` 이 준비되어 있어야 함
+- `pm2`, `node`, `corepack` 이 설치되어 있어야 함
+- 배포용 SSH 키가 해당 서버에 접속 가능해야 함
