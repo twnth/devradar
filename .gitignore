@@ -5,7 +5,6 @@ coverage
 .env
 .env.local
 .turbo
-pnpm-lock.yaml
 apps/**/.next
 apps/**/dist
 apps/**/coverage
