@@ -17,10 +17,10 @@
     "worker:once": "corepack pnpm --filter @devradar/worker run:once",
     "clean:web": "rm -rf apps/web/.next",
     "test": "corepack pnpm -r test",
-    "prisma:generate": "node --env-file=.env.local ./node_modules/prisma/build/index.js generate --schema prisma/schema.prisma",
-    "prisma:migrate": "node --env-file=.env.local ./node_modules/prisma/build/index.js migrate dev --schema prisma/schema.prisma",
-    "prisma:deploy": "node --env-file=.env.local ./node_modules/prisma/build/index.js migrate deploy --schema prisma/schema.prisma",
-    "prisma:seed": "node --env-file=.env.local ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
+    "prisma:generate": "node --env-file-if-exists=.env.local ./node_modules/prisma/build/index.js generate --schema prisma/schema.prisma",
+    "prisma:migrate": "node --env-file-if-exists=.env.local ./node_modules/prisma/build/index.js migrate dev --schema prisma/schema.prisma",
+    "prisma:deploy": "node --env-file-if-exists=.env.local ./node_modules/prisma/build/index.js migrate deploy --schema prisma/schema.prisma",
+    "prisma:seed": "node --env-file-if-exists=.env.local ./node_modules/tsx/dist/cli.mjs prisma/seed.ts"
   },
   "devDependencies": {
     "@prisma/client": "^6.7.0",
