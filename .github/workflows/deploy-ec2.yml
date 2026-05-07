@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: corepack pnpm install --frozen-lockfile
 
+      - name: Generate Prisma Client
+        run: corepack pnpm prisma:generate
+
       - name: Build
         run: corepack pnpm build
 
