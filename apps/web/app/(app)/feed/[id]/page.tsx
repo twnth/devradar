@@ -173,8 +173,8 @@ export default function FeedDetailPage() {
               </div>
               <ol className="space-y-3">
                 {briefingQuery.data.keyPoints.map((bullet: string, index: number) => (
-                  <li key={bullet} className="flex items-start gap-3 rounded-2xl border border-line bg-elevated px-4 py-3">
-                    <span className="mono mt-0.5 text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
+                  <li key={bullet} className="flex items-center gap-3 rounded-2xl border border-line bg-elevated px-4 py-3">
+                    <span className="mono shrink-0 text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
                     <p className="min-w-0 flex-1 text-sm leading-7 text-foreground">{bullet}</p>
                   </li>
                 ))}
