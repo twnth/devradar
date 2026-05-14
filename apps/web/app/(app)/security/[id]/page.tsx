@@ -68,13 +68,14 @@ export default function SecurityDetailPage() {
               <p className="text-xs uppercase tracking-[0.18em] text-muted">조치하지 않으면 생길 수 있는 일</p>
               <h2 className="mt-3 text-lg font-semibold">{impactQuery.data.title}</h2>
               <p className="mt-3 text-sm leading-7 text-muted">{impactQuery.data.intro}</p>
-              <div className="mt-5 space-y-3">
-                {impactQuery.data.sideEffects.map((effect: string) => (
-                  <div key={effect} className="rounded-2xl border border-line/80 bg-black/10 p-4 text-sm leading-7 text-foreground/90">
-                    {effect}
-                  </div>
+              <ol className="mt-5 space-y-3">
+                {impactQuery.data.sideEffects.map((effect: string, index: number) => (
+                  <li key={effect} className="flex items-center gap-3 rounded-2xl border border-line/80 bg-black/10 px-4 py-3">
+                    <span className="mono shrink-0 text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
+                    <p className="min-w-0 flex-1 text-sm leading-7 text-foreground/90">{effect}</p>
+                  </li>
                 ))}
-              </div>
+              </ol>
               <div className="mt-5 rounded-2xl border border-critical/20 bg-critical/10 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-critical">Operational risk</p>
                 <p className="mt-2 text-sm leading-7 text-foreground/90">{impactQuery.data.operationalRisk}</p>
