@@ -65,13 +65,13 @@ export default function DashboardPage() {
             const textValue = isTextValue ? String(metric.value) : "";
             const isLongTextValue = textValue.length > 18;
             return (
-              <Card key={metric.label} className="p-5">
+              <Card key={metric.label} className="overflow-hidden p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 overflow-hidden">
                     <p className="text-sm text-muted">{metric.label}</p>
                     <p
                       title={String(metric.value)}
-                      className={`mt-4 max-w-full font-semibold ${isTextValue ? `block overflow-hidden text-ellipsis whitespace-nowrap leading-7 ${isLongTextValue ? "text-base sm:text-lg xl:text-xl" : "text-xl xl:text-2xl"}` : "text-3xl"}`}
+                      className={`mt-4 w-full min-w-0 font-semibold ${isTextValue ? `block truncate leading-7 ${isLongTextValue ? "text-base sm:text-lg xl:text-xl" : "text-xl xl:text-2xl"}` : "text-3xl"}`}
                     >
                       {metric.value}
                     </p>
