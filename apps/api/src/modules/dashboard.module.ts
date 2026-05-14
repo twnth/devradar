@@ -15,6 +15,27 @@ function getKstDayRange(now = new Date()) {
   };
 }
 
+function getTodayIncidentWhere() {
+  const todayRange = getKstDayRange();
+
+  return {
+    OR: [
+      {
+        publishedAt: {
+          gte: todayRange.gte,
+          lt: todayRange.lt
+        }
+      },
+      {
+        modifiedAt: {
+          gte: todayRange.gte,
+          lt: todayRange.lt
+        }
+      }
+    ]
+  };
+}
+
 @Controller("api/v1/dashboard")
 class DashboardController {
   constructor(@Inject(PrismaService) private readonly prisma: PrismaService) {}
@@ -35,11 +56,13 @@ class DashboardController {
     try {
       const defaultUser = await getDefaultUser(this.prisma);
       const todayRange = getKstDayRange();
+      const todayIncidentWhere = getTodayIncidentWhere();
 
       const [criticalIncidentCount, todayFeedCount, topPriorityIncident, watchlistItems, incidents] =
         await Promise.all([
           this.prisma.securityIncident.count({
             where: {
+              ...todayIncidentWhere,
               severity: {
                 in: ["critical", "high"]
               }
@@ -55,6 +78,7 @@ class DashboardController {
           }),
           this.prisma.securityIncident.findFirst({
             where: {
+              ...todayIncidentWhere,
               severity: {
                 in: ["critical", "high", "medium", "low", "unknown"]
               }
@@ -69,7 +93,9 @@ class DashboardController {
                 }
               })
             : Promise.resolve([]),
-          this.prisma.securityIncident.findMany()
+          this.prisma.securityIncident.findMany({
+            where: todayIncidentWhere
+          })
         ]);
 
       const watchedAtRiskCount = watchlistItems.filter((item) => {
