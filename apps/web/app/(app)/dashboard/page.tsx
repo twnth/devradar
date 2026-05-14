@@ -62,6 +62,8 @@ export default function DashboardPage() {
           ].map((metric) => {
             const Icon = metric.icon;
             const isTextValue = typeof metric.value === "string";
+            const textValue = isTextValue ? String(metric.value) : "";
+            const isLongTextValue = textValue.length > 18;
             return (
               <Card key={metric.label} className="p-5">
                 <div className="flex items-start justify-between gap-3">
@@ -69,7 +71,7 @@ export default function DashboardPage() {
                     <p className="text-sm text-muted">{metric.label}</p>
                     <p
                       title={String(metric.value)}
-                      className={`mt-4 max-w-full font-semibold ${isTextValue ? "block overflow-hidden text-ellipsis whitespace-nowrap text-xl leading-7 xl:text-2xl" : "text-3xl"}`}
+                      className={`mt-4 max-w-full font-semibold ${isTextValue ? `block overflow-hidden text-ellipsis whitespace-nowrap leading-7 ${isLongTextValue ? "text-base sm:text-lg xl:text-xl" : "text-xl xl:text-2xl"}` : "text-3xl"}`}
                     >
                       {metric.value}
                     </p>
