@@ -171,11 +171,14 @@ export default function FeedDetailPage() {
               <div className="rounded-xl3 border border-line bg-elevated p-5">
                 <p className="text-sm leading-7 text-foreground">{briefingQuery.data.summary}</p>
               </div>
-              {briefingQuery.data.keyPoints.map((bullet: string) => (
-                <div key={bullet} className="rounded-xl3 border border-line bg-elevated p-5">
-                  <p className="text-sm leading-7 text-foreground">{bullet}</p>
-                </div>
-              ))}
+              <ol className="space-y-3">
+                {briefingQuery.data.keyPoints.map((bullet: string, index: number) => (
+                  <li key={bullet} className="flex items-start gap-3 rounded-2xl border border-line bg-elevated px-4 py-3">
+                    <span className="mono mt-0.5 text-xs text-accent">{String(index + 1).padStart(2, "0")}</span>
+                    <p className="min-w-0 flex-1 text-sm leading-7 text-foreground">{bullet}</p>
+                  </li>
+                ))}
+              </ol>
             </div>
           ) : null}
 
