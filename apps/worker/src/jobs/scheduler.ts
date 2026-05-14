@@ -19,6 +19,8 @@ export async function registerRecurringJobs(queues: {
   const pollingHours = {
     hackerNews: readPollingHours("WORKER_HN_POLL_HOURS", 2),
     githubReleases: readPollingHours("WORKER_GITHUB_RELEASES_POLL_HOURS", 4),
+    lobstersSecurity: readPollingHours("WORKER_LOBSTERS_SECURITY_POLL_HOURS", 2),
+    stepSecurityIncidents: readPollingHours("WORKER_STEPSECURITY_INCIDENTS_POLL_HOURS", 2),
     osv: readPollingHours("WORKER_OSV_POLL_HOURS", 2),
     githubAdvisories: readPollingHours("WORKER_GITHUB_ADVISORIES_POLL_HOURS", 2),
     nvd: readPollingHours("WORKER_NVD_POLL_HOURS", 6),
@@ -31,6 +33,8 @@ export async function registerRecurringJobs(queues: {
       {
         hackerNewsHours: pollingHours.hackerNews,
         githubReleasesHours: pollingHours.githubReleases,
+        lobstersSecurityHours: pollingHours.lobstersSecurity,
+        stepSecurityIncidentsHours: pollingHours.stepSecurityIncidents,
         osvHours: pollingHours.osv,
         githubAdvisoriesHours: pollingHours.githubAdvisories,
         nvdHours: pollingHours.nvd,
@@ -53,6 +57,20 @@ export async function registerRecurringJobs(queues: {
   }, {
     name: "ingest-github-releases",
     data: { source: "github-releases" }
+  });
+
+  await queues.feedIngest.upsertJobScheduler("ingest-lobsters-security", {
+    every: hoursToMs(pollingHours.lobstersSecurity)
+  }, {
+    name: "ingest-lobsters-security",
+    data: { source: "lobsters-security" }
+  });
+
+  await queues.feedIngest.upsertJobScheduler("ingest-step-security-incidents", {
+    every: hoursToMs(pollingHours.stepSecurityIncidents)
+  }, {
+    name: "ingest-step-security-incidents",
+    data: { source: "step-security-incidents" }
   });
 
   await queues.securityIngest.upsertJobScheduler("ingest-osv", {
@@ -91,6 +109,12 @@ export async function registerRecurringJobs(queues: {
     }),
     queues.feedIngest.add("ingest-github-releases", { source: "github-releases" }, {
       jobId: `startup:ingest-github-releases:${startedAt}`
+    }),
+    queues.feedIngest.add("ingest-lobsters-security", { source: "lobsters-security" }, {
+      jobId: `startup:ingest-lobsters-security:${startedAt}`
+    }),
+    queues.feedIngest.add("ingest-step-security-incidents", { source: "step-security-incidents" }, {
+      jobId: `startup:ingest-step-security-incidents:${startedAt}`
     }),
     queues.securityIngest.add("ingest-osv", { source: "osv" }, {
       jobId: `startup:ingest-osv:${startedAt}`

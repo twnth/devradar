@@ -43,6 +43,8 @@ redis    BullMQ queue. worker의 반복 작업과 job 실행을 관리합니다.
 ### Feed
 
 - Hacker News Firebase API
+- Lobsters security RSS
+- StepSecurity CI/CD Incidents
 - GitHub Releases
   - `vercel/next.js`
   - `vercel/vercel`
@@ -168,6 +170,8 @@ corepack pnpm worker:once
 - `CRON_ENABLED`
 - `WORKER_HN_POLL_HOURS`
 - `WORKER_GITHUB_RELEASES_POLL_HOURS`
+- `WORKER_LOBSTERS_SECURITY_POLL_HOURS`
+- `WORKER_STEPSECURITY_INCIDENTS_POLL_HOURS`
 - `WORKER_OSV_POLL_HOURS`
 - `WORKER_GITHUB_ADVISORIES_POLL_HOURS`
 - `WORKER_NVD_POLL_HOURS`
@@ -177,6 +181,8 @@ corepack pnpm worker:once
 
 - Hacker News: 2시간마다
 - GitHub Releases: 4시간마다
+- Lobsters Security: 2시간마다
+- StepSecurity Incidents: 2시간마다
 - OSV: 2시간마다
 - GitHub Advisories: 2시간마다
 - NVD: 6시간마다

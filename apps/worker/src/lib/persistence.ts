@@ -38,6 +38,8 @@ function sourceNameFromKey(sourceKey: string) {
     "github-releases:spring-boot": "Spring Boot Releases",
     "github-releases:kotlin": "Kotlin Releases",
     "github-releases:androidx": "AndroidX Releases",
+    "lobsters-security": "Lobsters Security",
+    "step-security-incidents": "StepSecurity Incidents",
     osv: "OSV",
     "github-advisories": "GitHub Advisories",
     nvd: "NVD",
@@ -57,12 +59,24 @@ function summarizeFeed(item: NormalizedFeedStaging) {
     return trimSentence(`${project} 새 릴리즈입니다. 변경 내역과 업그레이드 영향도를 확인하세요.`, 120);
   }
 
+  if (item.sourceKey === "lobsters-security") {
+    return trimSentence("Lobsters에서 개발자 보안 이슈로 토론 중인 글입니다. 운영 영향과 대응 논의를 함께 확인하세요.", 120);
+  }
+
+  if (item.sourceKey === "step-security-incidents") {
+    return trimSentence("공급망 보안 사고와 CI/CD 침해 사례를 빠르게 파악할 수 있는 보안 인시던트 요약입니다.", 120);
+  }
+
   return trimSentence(`${item.tags[0] ?? item.category} 관련 새 업데이트입니다. ${item.title}`, 120);
 }
 
 function whyFeedMatters(item: NormalizedFeedStaging) {
   if (item.sourceKey.startsWith("github-releases")) {
     return trimSentence("버전 고정, CI, 배포 파이프라인에 바로 영향이 있을 수 있습니다.", 80);
+  }
+
+  if (item.sourceKey === "lobsters-security" || item.sourceKey === "step-security-incidents") {
+    return trimSentence("오픈소스 공급망과 배포 파이프라인에 바로 영향을 줄 수 있는 이슈입니다.", 80);
   }
 
   return trimSentence(
@@ -108,6 +122,14 @@ function pollIntervalMinutesForSource(sourceKey: string) {
 
   if (sourceKey.startsWith("github-releases")) {
     return toMinutes(readPollingHours("WORKER_GITHUB_RELEASES_POLL_HOURS", 4));
+  }
+
+  if (sourceKey === "lobsters-security") {
+    return toMinutes(readPollingHours("WORKER_LOBSTERS_SECURITY_POLL_HOURS", 2));
+  }
+
+  if (sourceKey === "step-security-incidents") {
+    return toMinutes(readPollingHours("WORKER_STEPSECURITY_INCIDENTS_POLL_HOURS", 2));
   }
 
   if (sourceKey === "github-advisories") {

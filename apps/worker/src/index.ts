@@ -4,8 +4,10 @@ import { CisaKevAdapter } from "./adapters/cisa-kev.adapter";
 import { GitHubAdvisoriesAdapter } from "./adapters/github-advisories.adapter";
 import { GitHubReleasesAdapter } from "./adapters/github-releases.adapter";
 import { HackerNewsAdapter } from "./adapters/hacker-news.adapter";
+import { LobstersSecurityAdapter } from "./adapters/lobsters-security.adapter";
 import { NvdAdapter } from "./adapters/nvd.adapter";
 import { OsvAdapter } from "./adapters/osv.adapter";
+import { StepSecurityIncidentsAdapter } from "./adapters/step-security-incidents.adapter";
 import { createQueues, createWorkers } from "./jobs/pipeline";
 import { registerRecurringJobs } from "./jobs/scheduler";
 import { persistFeedItems, persistSecurityIncidents } from "./lib/persistence";
@@ -15,7 +17,9 @@ const connection = { url: redisUrl };
 
 const feedAdapters = {
   "hacker-news": new HackerNewsAdapter(),
-  "github-releases": new GitHubReleasesAdapter()
+  "github-releases": new GitHubReleasesAdapter(),
+  "lobsters-security": new LobstersSecurityAdapter(),
+  "step-security-incidents": new StepSecurityIncidentsAdapter()
 };
 
 const securityAdapters = {

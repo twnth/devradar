@@ -2,14 +2,18 @@ import { CisaKevAdapter } from "./adapters/cisa-kev.adapter";
 import { GitHubAdvisoriesAdapter } from "./adapters/github-advisories.adapter";
 import { GitHubReleasesAdapter } from "./adapters/github-releases.adapter";
 import { HackerNewsAdapter } from "./adapters/hacker-news.adapter";
+import { LobstersSecurityAdapter } from "./adapters/lobsters-security.adapter";
 import { NvdAdapter } from "./adapters/nvd.adapter";
 import { OsvAdapter } from "./adapters/osv.adapter";
+import { StepSecurityIncidentsAdapter } from "./adapters/step-security-incidents.adapter";
 import { prisma } from "./lib/prisma";
 import { persistFeedItems, persistSecurityIncidents } from "./lib/persistence";
 
 const feedAdapters = [
   new HackerNewsAdapter(),
-  new GitHubReleasesAdapter()
+  new GitHubReleasesAdapter(),
+  new LobstersSecurityAdapter(),
+  new StepSecurityIncidentsAdapter()
 ];
 
 const securityAdapters = [

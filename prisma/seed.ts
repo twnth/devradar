@@ -17,6 +17,8 @@ function toMinutes(hours: number) {
 const pollingMinutes = {
   hackerNews: toMinutes(readPollingHours("WORKER_HN_POLL_HOURS", 2)),
   githubReleases: toMinutes(readPollingHours("WORKER_GITHUB_RELEASES_POLL_HOURS", 4)),
+  lobstersSecurity: toMinutes(readPollingHours("WORKER_LOBSTERS_SECURITY_POLL_HOURS", 2)),
+  stepSecurityIncidents: toMinutes(readPollingHours("WORKER_STEPSECURITY_INCIDENTS_POLL_HOURS", 2)),
   githubAdvisories: toMinutes(readPollingHours("WORKER_GITHUB_ADVISORIES_POLL_HOURS", 2)),
   osv: toMinutes(readPollingHours("WORKER_OSV_POLL_HOURS", 2)),
   nvd: toMinutes(readPollingHours("WORKER_NVD_POLL_HOURS", 6)),
@@ -34,6 +36,8 @@ const sourceSeeds = [
   { key: "github-releases:spring-boot", name: "Spring Boot Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
   { key: "github-releases:kotlin", name: "Kotlin Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
   { key: "github-releases:androidx", name: "AndroidX Releases", type: SourceType.news, pollIntervalMinutes: pollingMinutes.githubReleases },
+  { key: "lobsters-security", name: "Lobsters Security", type: SourceType.news, pollIntervalMinutes: pollingMinutes.lobstersSecurity },
+  { key: "step-security-incidents", name: "StepSecurity Incidents", type: SourceType.news, pollIntervalMinutes: pollingMinutes.stepSecurityIncidents },
   { key: "github-advisories", name: "GitHub Advisories", type: SourceType.security, pollIntervalMinutes: pollingMinutes.githubAdvisories },
   { key: "osv", name: "OSV", type: SourceType.security, pollIntervalMinutes: pollingMinutes.osv },
   { key: "nvd", name: "NVD", type: SourceType.security, pollIntervalMinutes: pollingMinutes.nvd },
