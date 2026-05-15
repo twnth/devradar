@@ -22,7 +22,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/watchlist", "/alerts", "/settings", "/login"]
       }
     ],
-    sitemap: `${siteUrl}/sitemap.xml`,
-    host: siteUrl
+    sitemap: `${siteUrl}/sitemap.xml`
   };
 }
