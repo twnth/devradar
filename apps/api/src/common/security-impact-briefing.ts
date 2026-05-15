@@ -54,6 +54,29 @@ function buildSecurityInput(incident: PrismaIncident) {
   };
 }
 
+function trimToMax(value: string, max: number) {
+  const normalized = value.trim();
+  return normalized.length <= max ? normalized : `${normalized.slice(0, max - 1)}…`;
+}
+
+function normalizeSecurityImpactBriefing(payload: unknown): SecurityImpactBriefing {
+  const input = payload as {
+    title?: unknown;
+    intro?: unknown;
+    sideEffects?: unknown;
+    operationalRisk?: unknown;
+  };
+
+  return securityImpactBriefingSchema.parse({
+    title: trimToMax(String(input.title ?? ""), 80),
+    intro: trimToMax(String(input.intro ?? ""), 220),
+    sideEffects: Array.isArray(input.sideEffects)
+      ? input.sideEffects.map((effect) => trimToMax(String(effect ?? ""), 180)).filter(Boolean).slice(0, 4)
+      : [],
+    operationalRisk: trimToMax(String(input.operationalRisk ?? ""), 140)
+  });
+}
+
 export async function generateSecurityImpactBriefing(
   incident: PrismaIncident
 ): Promise<SecurityImpactBriefing | null> {
@@ -101,15 +124,15 @@ export async function generateSecurityImpactBriefing(
             type: "object",
             additionalProperties: false,
             properties: {
-              title: { type: "string" },
-              intro: { type: "string" },
+              title: { type: "string", maxLength: 80 },
+              intro: { type: "string", maxLength: 220 },
               sideEffects: {
                 type: "array",
-                items: { type: "string" },
+                items: { type: "string", maxLength: 180 },
                 minItems: 2,
                 maxItems: 4
               },
-              operationalRisk: { type: "string" }
+              operationalRisk: { type: "string", maxLength: 140 }
             },
             required: ["title", "intro", "sideEffects", "operationalRisk"]
           }
@@ -129,5 +152,5 @@ export async function generateSecurityImpactBriefing(
     return null;
   }
 
-  return securityImpactBriefingSchema.parse(JSON.parse(text));
+  return normalizeSecurityImpactBriefing(JSON.parse(text));
 }
