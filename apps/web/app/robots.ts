@@ -7,8 +7,18 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
+        userAgent: "Google-InspectionTool",
+        allow: "/",
+        disallow: ["/watchlist", "/alerts", "/settings", "/login"]
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: ["/watchlist", "/alerts", "/settings", "/login"]
+      },
+      {
         userAgent: "*",
-        allow: ["/dashboard", "/feed", "/security"],
+        allow: "/",
         disallow: ["/watchlist", "/alerts", "/settings", "/login"]
       }
     ],
