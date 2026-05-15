@@ -8,10 +8,10 @@ import clsx from "clsx";
 import { navItems } from "./nav-items";
 
 const routeTitles: Record<string, string> = {
-  "/dashboard": "Developer Dashboard",
-  "/feed": "Unified Feed",
-  "/security": "Urgent Patch Radar",
-  "/watchlist": "Package Watchlist"
+  "/dashboard": "대시보드",
+  "/feed": "오늘의 피드",
+  "/security": "긴급 보안 이슈",
+  "/watchlist": "워치리스트"
 };
 
 export function TopNavbar() {

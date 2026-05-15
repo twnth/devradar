@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { buildNoIndexMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildNoIndexMetadata({
-  title: "Redirect",
+  title: "DevRadar",
   description: "DevRadar 기본 진입 경로입니다.",
   path: "/"
 });

@@ -55,9 +55,9 @@ export default function DashboardPage() {
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
-            { label: "긴급 점검 이슈", value: criticalIncidentCount, icon: AlertTriangle },
+            { label: "긴급 보안 이슈", value: criticalIncidentCount, icon: AlertTriangle },
             { label: "주시 중 패키지", value: watchedAtRiskCount, icon: Shield },
-            { label: "오늘의 새 피드", value: todayFeedCount, icon: Newspaper },
+            { label: "오늘의 피드", value: todayFeedCount, icon: Newspaper },
             { label: "최고 우선순위", value: topPriorityLabel, icon: TrendingUp }
           ].map((metric) => {
             const Icon = metric.icon;
@@ -87,7 +87,7 @@ export default function DashboardPage() {
 
         <Card className="p-6">
           <SectionHeader
-            title="Unified developer feed"
+            title="오늘의 피드"
             description="중요한 변경만 먼저 훑고, 자세한 내용은 상세에서 이어서 읽을 수 있습니다."
             action={<Link href="/feed" className="text-sm text-accent">전체 보기</Link>}
           />
@@ -117,7 +117,7 @@ export default function DashboardPage() {
 
         <Card className="p-6">
           <SectionHeader
-            title="Urgent security incidents"
+            title="긴급 보안 이슈"
             description="중복 advisory를 걷어내고 canonical incident 중심으로 정리했습니다."
             action={<Link href="/security" className="text-sm text-accent">전체 보기</Link>}
           />
@@ -135,7 +135,7 @@ export default function DashboardPage() {
 
       <div className="space-y-6">
         <Card className="p-6">
-          <SectionHeader title="Today’s highlights" description="우측 패널은 데스크톱에서 빠르게 훑는 용도입니다." />
+          <SectionHeader title="오늘의 하이라이트" description="우측 패널은 데스크톱에서 빠르게 훑는 용도입니다." />
           <div className="mt-5 space-y-3">
             {incidents.slice(0, 3).map((incident) => (
               <Link
@@ -154,7 +154,7 @@ export default function DashboardPage() {
         </Card>
 
         <Card className="p-6">
-          <SectionHeader title="Watched package status" description="현재 버전이 있으면 impact confidence를 같이 보여줍니다." />
+          <SectionHeader title="주시 중 패키지 상태" description="현재 버전이 있으면 impact confidence를 같이 보여줍니다." />
           <div className="mt-5 space-y-3">
             {watchedPackages.map((item) => (
               <div key={item.id} className="flex items-center justify-between rounded-2xl border border-line bg-elevated p-4">
