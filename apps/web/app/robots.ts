@@ -8,8 +8,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/feed", "/security"],
-        disallow: ["/dashboard", "/watchlist", "/alerts", "/settings", "/login"]
+        allow: ["/dashboard", "/feed", "/security"],
+        disallow: ["/watchlist", "/alerts", "/settings", "/login"]
       }
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
