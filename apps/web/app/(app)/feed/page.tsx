@@ -50,7 +50,7 @@ export default function FeedPage() {
         </div>
       </Card>
 
-      <div className="space-y-4">
+      <div className="grid gap-4">
         {filtered.map((item) => (
           <FeedCard key={item.id} item={item} />
         ))}

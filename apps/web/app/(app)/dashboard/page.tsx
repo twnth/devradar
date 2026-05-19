@@ -103,7 +103,7 @@ export default function DashboardPage() {
               </button>
             ))}
           </div>
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 grid gap-4">
             {feedItems.map((item) => (
               <FeedCard key={item.id} item={item} />
             ))}
@@ -121,7 +121,7 @@ export default function DashboardPage() {
             description="중복 advisory를 걷어내고 canonical incident 중심으로 정리했습니다."
             action={<Link href="/security" className="text-sm text-accent">전체 보기</Link>}
           />
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 grid gap-4">
             {incidents.map((incident) => (
               <SecurityCard
                 key={incident.id}

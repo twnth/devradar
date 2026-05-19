@@ -12,7 +12,7 @@ export function SecurityCard({
   watchMatch?: boolean;
 }) {
   return (
-    <Link href={`/security/${incident.id}`}>
+    <Link href={`/security/${incident.id}`} className="block">
       <Card className="p-5 transition hover:-translate-y-0.5 hover:border-critical/40">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">

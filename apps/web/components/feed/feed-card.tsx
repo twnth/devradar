@@ -8,7 +8,7 @@ import { Card, SourceBadge, TagPill } from "@devradar/ui";
 
 export function FeedCard({ item }: { item: FeedItem }) {
   return (
-    <Link href={`/feed/${item.id}`}>
+    <Link href={`/feed/${item.id}`} className="block">
       <Card className="p-5 transition hover:-translate-y-0.5 hover:border-accent/50">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">

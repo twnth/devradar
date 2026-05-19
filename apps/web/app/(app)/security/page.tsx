@@ -35,7 +35,7 @@ export default function SecurityPage() {
           ))}
         </div>
       </Card>
-      <div className="space-y-4">
+      <div className="grid gap-4">
         {filtered.map((incident) => (
           <SecurityCard key={incident.id} incident={incident} watchMatch={watched.has(incident.packageName)} />
         ))}
