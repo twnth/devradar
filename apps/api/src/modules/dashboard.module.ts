@@ -19,20 +19,10 @@ function getTodayIncidentWhere() {
   const todayRange = getKstDayRange();
 
   return {
-    OR: [
-      {
-        publishedAt: {
-          gte: todayRange.gte,
-          lt: todayRange.lt
-        }
-      },
-      {
-        modifiedAt: {
-          gte: todayRange.gte,
-          lt: todayRange.lt
-        }
-      }
-    ]
+    publishedAt: {
+      gte: todayRange.gte,
+      lt: todayRange.lt
+    }
   };
 }
 
