@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
+import { GoogleAnalyticsPageView } from "@/components/analytics/google-analytics";
 import { Providers } from "./providers";
 
 export const metadata: Metadata = {
@@ -47,7 +49,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className="dark">
       <body>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-XGPYG18XV2"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', 'G-XGPYG18XV2');
+          `}
+        </Script>
         <Providers>{children}</Providers>
+        <GoogleAnalyticsPageView />
       </body>
     </html>
   );
