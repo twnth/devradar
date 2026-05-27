@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const GA_MEASUREMENT_ID = "G-XGPYG18XV2";
+const GA_MEASUREMENT_ID = "G-K8TG32PZ0F";
 
 type GtagCommand = "js" | "config" | "event";
 
